@@ -30,6 +30,14 @@ class ONCFBot(object):
 		self.driver.find_element_by_xpath("//input[@id='destination']").send_keys(destination)
 		self.driver.find_element_by_xpath("//h2[@class='SearchForm_title']").click()
 		sleep(1)
+		self.driver.find_element_by_xpath("/html/body/div[1]/section/div[1]/div[2]/main/div[1]/div[2]/div/div[2]/div[1]/div[3]/div[1]/div[2]/div/div[1]/div[4]/div/div/div[1]/div/div/input").click()
+		sleep(1)
+		self.driver.find_element_by_xpath("/html/body/div[2]/div/div[2]/div/div[2]/div[2]/div[1]/div/div[2]/div[2]/div[4]/div[3]").click()
+		sleep(1)
+		self.driver.find_element_by_xpath('/html/body/div[2]/div/div[2]/div/div[2]/div[2]/div[2]/label[1]/span[2]').click()
+		sleep(1)
+		self.driver.find_element_by_xpath('/html/body/div[2]/div/div[2]/div/div[2]/div[3]/div/button[2]').click()
+		sleep(1)
 		self.driver.find_element_by_xpath("/html/body/div/section/div[1]/div[2]/main/div[1]/div[2]/div/div[2]/div[1]/div[3]/div[1]/div[2]/div/div[3]/div/button").click()
 		while(1):
 			sleep(10)
@@ -49,8 +57,8 @@ class ONCFBot(object):
 		self.driver.close()
 		self.driver.quit()
 bot = ONCFBot()
-#gares = bot.get_all_gares()
-gares = ['CASA VOYAGEURS','MEKNES','FES','RABAT AGDAL']
+gares = bot.get_all_gares()
+#gares = ['CASA VOYAGEURS','MEKNES','FES','RABAT AGDAL']
 nbGares = len(gares)
 data = {}
 for i in range(nbGares):
@@ -65,4 +73,5 @@ for trip in data.keys():
 	prices = data[trip][1]
 	for i in range(len(prices)):
 		out.write(trip+";"+times[2*i]+";"+times[2*i+1]+";"+prices[i]+'\n')
+#bot.search('MEKNES','FES')
 bot.close()
