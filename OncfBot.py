@@ -6,6 +6,9 @@ class ONCFBot(object):
 	"""docstring for ONCFBot"""
 	def __init__(self):
 		self.driver = webdriver.Chrome("C:/Program Files/operadriver.exe")
+		self.driver.maximize_window()
+		self.out = open('oncfTrips.csv','a')
+		self.out.write('from;to;depart_time;arrival_time;price\n')
 		
 
 	def get_all_gares(self):
@@ -19,7 +22,7 @@ class ONCFBot(object):
 
 	def search(self,origin,destination):
 		self.driver.get("https://www.oncf-voyages.ma")
-		sleep(10)
+		sleep(2)
 		prices = []
 		times = []
 		self.driver.find_element_by_xpath("//div[@id='origin']").click()
@@ -32,7 +35,7 @@ class ONCFBot(object):
 		sleep(1)
 		self.driver.find_element_by_xpath("/html/body/div[1]/section/div[1]/div[2]/main/div[1]/div[2]/div/div[2]/div[1]/div[3]/div[1]/div[2]/div/div[1]/div[4]/div/div/div[1]/div/div/input").click()
 		sleep(1)
-		self.driver.find_element_by_xpath("/html/body/div[2]/div/div[2]/div/div[2]/div[2]/div[1]/div/div[2]/div[2]/div[4]/div[3]").click()
+		self.driver.find_element_by_xpath("/html/body/div[2]/div/div[2]/div/div[2]/div[2]/div[1]/div/div[2]/div[2]/div[4]/div[4]").click()
 		sleep(1)
 		self.driver.find_element_by_xpath('/html/body/div[2]/div/div[2]/div/div[2]/div[2]/div[2]/label[1]/span[2]').click()
 		sleep(1)
@@ -52,26 +55,20 @@ class ONCFBot(object):
 				self.driver.find_element_by_xpath("/html/body/div[1]/section/div[1]/div[2]/main/div/div/div/div[1]/div/div[5]/div[2]/a").click()
 			except NoSuchElementException :
 				break
-		return [times,prices]
+		for i in range(len(prices)):
+			self.out.write(origin+";"+destination+";"+times[2*i]+";"+times[2*i+1]+";"+prices[i]+'\n')
 	def close(self):
 		self.driver.close()
 		self.driver.quit()
+		self.out.close()
 bot = ONCFBot()
-gares = bot.get_all_gares()
-#gares = ['CASA VOYAGEURS','MEKNES','FES','RABAT AGDAL']
+# gares = bot.get_all_gares() # all gars are a lot 
+gares = ['AEROPORT MED V', 'AGADIR  (SUPRAT.)', 'AIN SEBAA', 'AIN-TAOUJDATE',  'ASILAH', 'BENGUERIR', 'BENI-MELLAL', 'BERRECHID', 'BOUZNIKA', 'CASA PORT', 'CASA VOYAGEURS', 'CHEFCHAOUEN', 'EL JADIDA', 'EL KHEMISSET', 'EL KSAR EL KEBIR',  'ERFOUD (SUPRAT.)', 'ERRACHIDIA (SUPRAT.)', 'ESSAOUIRA', 'FACULTES', 'FES', 'FNIDEQ (SUPRA.)', 'FQUIH BEN SALAH', 'GUELMIMA', 'GUELMIME',  'JORF EL MELHA', 'KELAA  DES  SRAGHNAS', 'KENITRA', 'KHENIFRA (SUPRAT.)', 'KHOURIBGA', 'LAAYOUNE', 'LARACHE', "L'OASIS", 'MARRAKECH', 'MARTIL' , 'MEKNES', 'MEKNES AL AMIR',  'MERS SULTAN', 'MIDELT (SUPRAT.)', 'MOHAMMEDIA', 'NADOR VILLE', 'OUARZAZATE', 'OUEZZANE', 'OUJDA', 'RABAT AGDAL', 'RABAT VILLE',  'SAFI', 'SALE', 'SALE TABRIQUET', 'SEBAA-AIOUN', 'SETTAT', 'SIDI KACEM',  'SIDI SLIMANE MEDINA', 'SKHIRAT', 'SOUK EL ARBAA', 'TANGER VILLE', 'TAZA', 'TEMARA', 'TETOUAN', 'TIZNIT',  'YOUSSOUFIA']
 nbGares = len(gares)
-data = {}
-for i in range(nbGares):
+for i in range(29,nbGares):
+	print(i)
 	for j in range(nbGares):
 		if i != j:
-			data[gares[i]+';'+gares[j]] = bot.search(gares[i],gares[j])
-
-out = open('oncfTrips.csv','w')
-out.write('from;to;depart_time;arrival_time;price\n')
-for trip in data.keys():
-	times = data[trip][0]
-	prices = data[trip][1]
-	for i in range(len(prices)):
-		out.write(trip+";"+times[2*i]+";"+times[2*i+1]+";"+prices[i]+'\n')
-#bot.search('MEKNES','FES')
+			print(gares[i],gares[j])
+			bot.search(gares[i],gares[j])
 bot.close()
