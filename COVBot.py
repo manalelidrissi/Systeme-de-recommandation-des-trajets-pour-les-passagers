@@ -1,6 +1,6 @@
 from selenium import webdriver
 from time import sleep
-from selenium.common.exceptions import UnexpectedAlertPresentException
+from selenium.common.exceptions import NoSuchElementException,StaleElementReferenceException,ElementNotVisibleException
 
 class COVBot(object):
 	"""docstring for COVBot"""
@@ -17,25 +17,43 @@ class COVBot(object):
 
 
 	def get_infos(self):
-		tripList = self.driver.find_element_by_xpath('/html/body/div[2]/div[1]/div[2]/div[2]/div[2]/div/div[2]/div/div[3]').find_elements_by_xpath("//div[contains(@class, 'items')]")
-		print(len(tripList))
-		sleep(1)
-		for trip in tripList:
-			driversinfos = trip.find_element_by_xpath('//div[contains(@class, "recent-ride-row-img")]').find_elements_by_xpath('//div')
-			tripinfos = trip.find_element_by_xpath('//div[contains(@class,"recent-ride-row-info")]').find_elements_by_xpath('//div')
-			tripprice = trip.find_element_by_xpath('//div[contains(@class,"recent-ride-row-price")]').find_elements_by_xpath('//div')
-			self.drivers.append([driversinfos[1].text,driversinfos[2].text,driversinfos[3].text])
-			self.from_to.append([tripinfos[0].text,tripinfos[3].text,len(tripinfos[2].find_elements_by_xpath('//span'))])
-			self.dates_times.append(tripinfos[2].text)
-			self.prices.append(tripprice[0].find_elements_by_xpath('//span[contains(@class,"price")]')[0].text)
-		print(self.drivers)
-		print(self.from_to)
-		print(self.dates_times)
-		print(self.prices)
+		while(1):
+			self.driver.execute_script("window.scrollTo(0, 0);")
+			sleep(10)
+			try:
+				driversinfos = self.driver.find_elements_by_xpath('//div[@class = "recent-ride-row-img"]')
+				tripinfos =  self.driver.find_elements_by_xpath('//div[@class = "recent-ride-row-info"]')
+				tripprice = self.driver.find_elements_by_xpath('//div[@class = "recent-ride-row-price"]')
+				for i in range(len(driversinfos)):
+					self.drivers.append(driversinfos[i].text.split('\n'))
+					self.from_to.append(tripinfos[i].text.split('\n')[0].split(' '))
+					if tripinfos[i].text.split('\n')[1].startswith('Date'):
+						self.dates_times.append(tripinfos[i].text.split('\n')[1].split(': ')[1].split(' - '))
+					else:
+						self.dates_times.append(tripinfos[i].text.split('\n')[2].split(': ')[1].split(' - '))
+					self.prices.append(tripprice[i].text.split('\n')[0])
+					self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+				sleep(2)
+				self.driver.find_element_by_xpath("/html/body/div[2]/div[1]/div[2]/div[2]/div[2]/div/div[2]/div/div[4]/ul/li[13]/a").click()
+			except ElementNotVisibleException :
+				break
+
+	def close(self):
+		self.driver.close()
+		self.driver.quit()
+
+	def saveinfos(self):
+		out = open('COVTrips.csv','w')
+		out.write('driver_name;driver_sex;driver_age;driver_is_smoking;from;to;date;time;price\n')
+		for i in range(len(drivers)):
+			out.write(drivers[i][0]+';'+drivers[i][1].split(' | ')[0]+';'+drivers[i][1].split(' | ')[1]+';'+drivers[i][2].split(' : ')[1]+';'+from_to[i].split(' ')[0]+';'+from_to[i].split(' ')[1]+';'+dates_times[i][0]+';'+dates_times[i][1]+';'+prices[i]+'\n');
+
 
 
 bot = COVBot()
 bot.get_infos()
+bot.saveinfos()
+bot.close()
 
 
 
