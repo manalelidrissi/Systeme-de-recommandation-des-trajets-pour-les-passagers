@@ -7,11 +7,10 @@ class CTMBot(object):
 	def __init__(self):
 		self.driver = webdriver.Chrome("C:/Program Files/operadriver.exe")
 		self.out = open('CTMTrips.csv','a')
-	
+		self.driver.maximize_window()
 
 	def search(self,origin,destination):
 		self.driver.get('http://www.ctm.ma/home/index')
-		self.driver.maximize_window()
 		sleep(2)
 		prices = []
 		times = []
@@ -47,7 +46,7 @@ class CTMBot(object):
 bot = CTMBot()
 gares = ['Agadir','Al Hoceima','Azrou','Beni Mellal','Fkih Ben Salah','Berkane','Casablanca FAR','Casablanca Ain Sebaa','Casablanca Maarif','Chefchaouen','Dakhla','El Hajeb','Errachidia','Essaouira','Fes','Fnidek','Guelmim','Ifrane','Kasbat Tadla','Kelaa Sraghna','Khemisset','Khenifra','Khouribga','Ksar El Kébir','Laayoune','Larache','Marrakech','Meknes','Midelt','Mrirt','Nador','Ouarzazate','Oujda','Rabat','Safi','Saidia','Sidi Kacem','Souk Larbaa','Tan Tan','Tanger','Taounate','Taza','Tetouan','Tiflet']
 nbGares = len(gares)
-for i in range(14,nbGares):
+for i in range(32,nbGares):
 	print(i)
 	for j in range(nbGares):
 		if i != j:

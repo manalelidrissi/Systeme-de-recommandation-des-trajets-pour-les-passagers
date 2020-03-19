@@ -8,7 +8,7 @@ class ONCFBot(object):
 		self.driver = webdriver.Chrome("C:/Program Files/operadriver.exe")
 		self.driver.maximize_window()
 		self.out = open('oncfTrips.csv','a')
-		self.out.write('from;to;depart_time;arrival_time;price\n')
+		#self.out.write('from;to;depart_time;arrival_time;price\n')
 		
 
 	def get_all_gares(self):
@@ -65,7 +65,7 @@ bot = ONCFBot()
 # gares = bot.get_all_gares() # all gars are a lot 
 gares = ['AEROPORT MED V', 'AGADIR  (SUPRAT.)', 'AIN SEBAA', 'AIN-TAOUJDATE',  'ASILAH', 'BENGUERIR', 'BENI-MELLAL', 'BERRECHID', 'BOUZNIKA', 'CASA PORT', 'CASA VOYAGEURS', 'CHEFCHAOUEN', 'EL JADIDA', 'EL KHEMISSET', 'EL KSAR EL KEBIR',  'ERFOUD (SUPRAT.)', 'ERRACHIDIA (SUPRAT.)', 'ESSAOUIRA', 'FACULTES', 'FES', 'FNIDEQ (SUPRA.)', 'FQUIH BEN SALAH', 'GUELMIMA', 'GUELMIME',  'JORF EL MELHA', 'KELAA  DES  SRAGHNAS', 'KENITRA', 'KHENIFRA (SUPRAT.)', 'KHOURIBGA', 'LAAYOUNE', 'LARACHE', "L'OASIS", 'MARRAKECH', 'MARTIL' , 'MEKNES', 'MEKNES AL AMIR',  'MERS SULTAN', 'MIDELT (SUPRAT.)', 'MOHAMMEDIA', 'NADOR VILLE', 'OUARZAZATE', 'OUEZZANE', 'OUJDA', 'RABAT AGDAL', 'RABAT VILLE',  'SAFI', 'SALE', 'SALE TABRIQUET', 'SEBAA-AIOUN', 'SETTAT', 'SIDI KACEM',  'SIDI SLIMANE MEDINA', 'SKHIRAT', 'SOUK EL ARBAA', 'TANGER VILLE', 'TAZA', 'TEMARA', 'TETOUAN', 'TIZNIT',  'YOUSSOUFIA']
 nbGares = len(gares)
-for i in range(29,nbGares):
+for i in range(43,nbGares):
 	print(i)
 	for j in range(nbGares):
 		if i != j:
