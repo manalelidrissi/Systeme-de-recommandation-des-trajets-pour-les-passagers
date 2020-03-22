@@ -43,10 +43,10 @@ class COVBot(object):
 		self.driver.quit()
 
 	def saveinfos(self):
-		out = open('COVTrips.csv','w')
-		out.write('driver_name;driver_sex;driver_age;driver_is_smoking;from;to;date;time;price\n')
-		for i in range(len(drivers)):
-			out.write(drivers[i][0]+';'+drivers[i][1].split(' | ')[0]+';'+drivers[i][1].split(' | ')[1]+';'+drivers[i][2].split(' : ')[1]+';'+from_to[i].split(' ')[0]+';'+from_to[i].split(' ')[1]+';'+dates_times[i][0]+';'+dates_times[i][1]+';'+prices[i]+'\n');
+out = open('COVTrips.csv','w')
+out.write('driver_name;driver_sex;driver_age;driver_is_smoking;from;to;date;time;price\n')
+for i in range(len(bot.drivers)):
+	out.write(bot.drivers[i][0]+';'+bot.drivers[i][1].split(' | ')[0]+';'+bot.drivers[i][1].split(' | ')[1]+';'+bot.drivers[i][2].split(' : ')[1]+';'+bot.from_to[i][0]+';'+bot.from_to[i][1]+';'+bot.dates_times[i][0]+';'+bot.dates_times[i][1]+';'+bot.prices[i]+'\n');
 
 
 
