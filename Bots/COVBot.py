@@ -34,6 +34,7 @@ class COVBot(object):
 					self.prices.append(tripprice[i].text.split('\n')[0])
 					self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
 				sleep(2)
+				print(1)
 				self.driver.find_element_by_xpath("/html/body/div[2]/div[1]/div[2]/div[2]/div[2]/div/div[2]/div/div[4]/ul/li[13]/a").click()
 			except ElementNotVisibleException :
 				break
@@ -43,10 +44,10 @@ class COVBot(object):
 		self.driver.quit()
 
 	def saveinfos(self):
-out = open('COVTrips.csv','w')
-out.write('driver_name;driver_sex;driver_age;driver_is_smoking;from;to;date;time;price\n')
-for i in range(len(bot.drivers)):
-	out.write(bot.drivers[i][0]+';'+bot.drivers[i][1].split(' | ')[0]+';'+bot.drivers[i][1].split(' | ')[1]+';'+bot.drivers[i][2].split(' : ')[1]+';'+bot.from_to[i][0]+';'+bot.from_to[i][1]+';'+bot.dates_times[i][0]+';'+bot.dates_times[i][1]+';'+bot.prices[i]+'\n');
+		out = open('COVTrips.csv','w')
+		out.write('driver_name;driver_sex;driver_age;driver_is_smoking;from;to;date;time;price\n')
+		for i in range(len(bot.drivers)):
+			out.write(bot.drivers[i][0]+';'+bot.drivers[i][1].split(' | ')[0]+';'+bot.drivers[i][1].split(' | ')[1]+';'+bot.drivers[i][2].split(' : ')[1]+';'+bot.from_to[i][0]+';'+bot.from_to[i][1]+';'+bot.dates_times[i][0]+';'+bot.dates_times[i][1]+';'+bot.prices[i]+'\n');
 
 
 
